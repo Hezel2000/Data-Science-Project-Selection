@@ -148,7 +148,20 @@ overview = pd.read_sql_query(
     conn
 )
 
+overview = pd.read_sql_query(
+    """
+    SELECT
+        title AS Project,
+        claimed_by AS Student
+    FROM projects
+    ORDER BY title
+    """,
+    conn
+)
+
 overview["Student"] = overview["Student"].fillna("Available")
+
+overview.insert(0, "Nr.", range(1, len(overview) + 1))
 
 st.dataframe(
     overview,
