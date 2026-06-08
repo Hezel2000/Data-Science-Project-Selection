@@ -56,6 +56,21 @@ for category, projects in project_structure.items():
             (project,)
         )
 
+# Remove projects that are no longer present in project_structure
+valid_projects = {
+    project
+    for project_list in project_structure.values()
+    for project in project_list
+}
+
+c.execute("SELECT title FROM projects")
+for (title,) in c.fetchall():
+    if title not in valid_projects:
+        c.execute(
+            "DELETE FROM projects WHERE title=?",
+            (title,)
+        )
+
 conn.commit()
 
 # --- app ---
