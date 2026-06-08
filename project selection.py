@@ -180,41 +180,60 @@ with col_overview:
         for i, project in enumerate(overview["Project"])
     ]
 
-    overview_html = overview.to_html(
-        index=False,
-        escape=False
-    )
+    table_rows = ""
+
+    for _, row in overview.iterrows():
+        table_rows += f"""
+        <tr>
+            <td>{row['Project']}</td>
+            <td>{row['Student']}</td>
+        </tr>
+        """
 
     st.markdown(
         f"""
         <style>
-        .overview-table table {{
+        .selection-table {{
             width: 100%;
+            table-layout: fixed;
             border-collapse: collapse;
+            font-size: 0.85rem;
         }}
-        .overview-table th {{
+        .selection-table th {{
             text-align: left;
             padding: 0.45rem;
-            border-bottom: 1px solid rgba(128,128,128,0.35);
+            border: 1px solid rgba(128,128,128,0.35);
+            background-color: rgba(128,128,128,0.08);
         }}
-        .overview-table td {{
-            white-space: normal !important;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            vertical-align: top;
+        .selection-table td {{
             padding: 0.45rem;
-            border-bottom: 1px solid rgba(128,128,128,0.2);
+            border: 1px solid rgba(128,128,128,0.25);
+            vertical-align: top;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: normal;
         }}
-        .overview-table td:first-child {{
-            width: 65%;
+        .selection-table th:first-child,
+        .selection-table td:first-child {{
+            width: 68%;
         }}
-        .overview-table td:nth-child(2) {{
-            width: 35%;
+        .selection-table th:nth-child(2),
+        .selection-table td:nth-child(2) {{
+            width: 32%;
         }}
         </style>
-        <div class="overview-table">
-        {overview_html}
-        </div>
+
+        <table class="selection-table">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Student</th>
+                </tr>
+            </thead>
+            <tbody>
+                {table_rows}
+            </tbody>
+        </table>
         """,
         unsafe_allow_html=True
     )
