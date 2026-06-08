@@ -33,17 +33,6 @@ project_structure = {
     ]
 }
 
-for category, projects in project_structure.items():
-    for project in projects:
-        c.execute(
-            """
-            INSERT OR IGNORE INTO projects
-            (title, claimed_by)
-            VALUES (?, NULL)
-            """,
-            (project,)
-        )
-
 # --- database setup ---
 conn = sqlite3.connect(DB, check_same_thread=False)
 c = conn.cursor()
@@ -56,8 +45,8 @@ CREATE TABLE IF NOT EXISTS projects (
 )
 """)
 
-for category, project_list in project_structure.items():
-    for project in project_list:
+for category, projects in project_structure.items():
+    for project in projects:
         c.execute(
             """
             INSERT OR IGNORE INTO projects
