@@ -9,7 +9,7 @@ DB = "projects.db"
 
 project_structure = {
     "Interaktive Datenvisualisierung": [
-        "Daten aus Internet-Quellen in interaktiven Diagrammen auf einer Webseite darstellen (z.B. unterschiedliche Scatter-Plots, aber auch mineralogische Standard-Diagramme, wie etwa das QAPF-Diagramm, Isotopen-Diagramme, o.ä.)",
+        "Daten aus Internet-Quellen in interaktiven Diagrammen auf einer Webseite darstellen",
         "Daten aus Internet-Quellen auf interaktiven Weltkarten auf einer Webseite darstellen",
         "Eigene Daten in interaktiven Diagrammen und auf Karten darstellen",
     ],
@@ -140,7 +140,7 @@ with col_projects:
                 name = student_name.strip()
 
                 if not name:
-                    st.warning("Please enter your email first.")
+                    st.warning("Please enter your full name first.")
 
                 else:
                     already_claimed = pd.read_sql_query(
@@ -175,6 +175,18 @@ with col_overview:
     )
 
     overview["Student"] = overview["Student"].fillna("Available")
+
+    claimed_count = overview["Student"].ne("Available").sum()
+    total_count = len(overview)
+
+    st.info(f"{claimed_count} of {total_count} projects claimed")
+
+    st.download_button(
+        "Download project assignments",
+        overview.to_csv(index=False),
+        file_name="project_assignments.csv",
+        mime="text/csv"
+    )
 
     overview["Project"] = [
         f"{i + 1}. {project}"
