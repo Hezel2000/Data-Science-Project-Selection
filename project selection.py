@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="centered")
 
 DB = "projects.db"
 
@@ -79,7 +79,7 @@ conn.commit()
 st.title("Project Suggestions")
 
 student_name = st.text_input("Enter your email")
-col_projects, col_overview = st.columns([3, 2])
+col_projects, col_overview = st.columns([2, 1])
 
 df = pd.read_sql_query("SELECT * FROM projects ORDER BY title", conn)
 
@@ -206,10 +206,10 @@ with col_overview:
             border-bottom: 1px solid rgba(128,128,128,0.2);
         }}
         .overview-table td:first-child {{
-            width: 70%;
+            width: 65%;
         }}
         .overview-table td:nth-child(2) {{
-            width: 30%;
+            width: 35%;
         }}
         </style>
         <div class="overview-table">
