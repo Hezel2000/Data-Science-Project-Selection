@@ -63,7 +63,12 @@ st.title("Project Suggestions")
 
 student_name = st.text_input("Enter your email")
 
-df = pd.read_sql_query("SELECT * FROM projects", conn)
+df = pd.read_sql_query("SELECT * FROM projects ORDER BY title", conn)
+
+project_numbers = {
+    title: i + 1
+    for i, title in enumerate(df["title"])
+}
 
 for _, row in df.iterrows():
     claimed = row["claimed_by"] is not None
@@ -78,7 +83,7 @@ for _, row in df.iterrows():
                 padding:12px;
                 border-radius:8px;
                 margin-bottom:8px;">
-                <b>{row['title']}</b><br>
+                <b>{project_numbers[row['title']]}. {row['title']}</b><br>
                 Claimed by: {row['claimed_by']}
             </div>
             """,
@@ -86,7 +91,7 @@ for _, row in df.iterrows():
         )
 
         if student_name.strip() == row["claimed_by"]:
-            if st.button("Give back this project", key=f"return_{row['id']}"):
+            if st.button(f"Give back project {project_numbers[row['title']]}", key=f"return_{row['id']}"):
                 c.execute(
                     "UPDATE projects SET claimed_by=NULL WHERE id=? AND claimed_by=?",
                     (row["id"], student_name.strip())
@@ -104,18 +109,18 @@ for _, row in df.iterrows():
                 padding:12px;
                 border-radius:8px;
                 margin-bottom:8px;">
-                <b>{row['title']}</b><br>
+                <b>{project_numbers[row['title']]}. {row['title']}</b><br>
                 Available
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        if st.button("Claim this project", key=f"claim_{row['id']}"):
+        if st.button(f"Claim project {project_numbers[row['title']]}", key=f"claim_{row['id']}"):
             name = student_name.strip()
 
             if not name:
-                st.warning("Please enter your name first.")
+                st.warning("Please enter your email first.")
 
             else:
                 already_claimed = pd.read_sql_query(
@@ -139,17 +144,6 @@ st.subheader("Current project selection")
 
 overview = pd.read_sql_query(
     """
-    SELECT 
-        title AS Project,
-        claimed_by AS Student
-    FROM projects
-    ORDER BY title
-    """,
-    conn
-)
-
-overview = pd.read_sql_query(
-    """
     SELECT
         title AS Project,
         claimed_by AS Student
@@ -161,7 +155,10 @@ overview = pd.read_sql_query(
 
 overview["Student"] = overview["Student"].fillna("Available")
 
-overview.insert(0, "Nr.", range(1, len(overview) + 1))
+overview["Project"] = [
+    f"{i + 1}. {project}"
+    for i, project in enumerate(overview["Project"])
+]
 
 st.dataframe(
     overview,
