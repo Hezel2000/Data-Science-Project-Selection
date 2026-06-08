@@ -2,6 +2,8 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 
+st.set_page_config(layout="wide")
+
 DB = "projects.db"
 
 project_structure = {
@@ -77,7 +79,7 @@ conn.commit()
 st.title("Project Suggestions")
 
 student_name = st.text_input("Enter your email")
-col_projects, col_overview = st.columns([2, 1])
+col_projects, col_overview = st.columns([3, 2])
 
 df = pd.read_sql_query("SELECT * FROM projects ORDER BY title", conn)
 
@@ -178,8 +180,41 @@ with col_overview:
         for i, project in enumerate(overview["Project"])
     ]
 
-    st.dataframe(
-        overview,
-        hide_index=True,
-        use_container_width=True
+    overview_html = overview.to_html(
+        index=False,
+        escape=False
+    )
+
+    st.markdown(
+        f"""
+        <style>
+        .overview-table table {{
+            width: 100%;
+            border-collapse: collapse;
+        }}
+        .overview-table th {{
+            text-align: left;
+            padding: 0.45rem;
+            border-bottom: 1px solid rgba(128,128,128,0.35);
+        }}
+        .overview-table td {{
+            white-space: normal !important;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            vertical-align: top;
+            padding: 0.45rem;
+            border-bottom: 1px solid rgba(128,128,128,0.2);
+        }}
+        .overview-table td:first-child {{
+            width: 70%;
+        }}
+        .overview-table td:nth-child(2) {{
+            width: 30%;
+        }}
+        </style>
+        <div class="overview-table">
+        {overview_html}
+        </div>
+        """,
+        unsafe_allow_html=True
     )
