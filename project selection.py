@@ -79,7 +79,7 @@ conn.commit()
 # --- app ---
 st.title("Project Suggestions")
 
-student_name = st.text_input("Enter your email")
+student_name = st.text_input("Enter your full name")
 col_projects, col_overview = st.columns([2, 1])
 
 df = pd.read_sql_query("SELECT * FROM projects ORDER BY title", conn)
