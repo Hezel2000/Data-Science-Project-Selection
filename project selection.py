@@ -4,12 +4,45 @@ import pandas as pd
 
 DB = "projects.db"
 
-projects = [
-    "Oxygen isotopes in chondrules",
-    "Diffusion profiles in garnet",
-    "Volcanic ash geochemistry",
-    "Machine learning for mineral classification",
-]
+project_structure = {
+    "Interaktive Datenvisualisierung": [
+        "Daten aus Internet-Quellen in interaktiven Diagrammen auf einer Webseite darstellen (z.B. unterschiedliche Scatter-Plots, aber auch mineralogische Standard-Diagramme, wie etwa das QAPF-Diagramm, Isotopen-Diagramme, o.ä.)",
+        "Daten aus Internet-Quellen auf interaktiven Weltkarten auf einer Webseite darstellen",
+        "Eigene Daten in interaktiven Diagrammen und auf Karten darstellen",
+    ],
+
+    "Interaktive Prozesse": [
+        "Isotopen-Rayleigh-Fraktionierung",
+        "Mineralfraktionierung in Dreiecksdiagrammen",
+        "Mischung von Reservoiren",
+        "Diffusion eines Elements in ein Mineral",
+        "Radioaktiver Zerfall",
+        "Berechnung einer Mineralformel aus einer Mineral-Analyse",
+    ],
+
+    "Kristallographie und Petrologie": [
+        "Bragg-Beugung interaktiv darstellen",
+        "Ein Phasendiagramm interaktiv darstellen",
+    ],
+
+    "Statistik": [
+        "Illustration und Erklärung von SD, SE usw. für verschiedene Verteilungen",
+        "Test, ob zwei Messungen bzw. zwei Punktwolken zwei Cluster darstellen oder nur einen",
+        "Regressionen für verschiedene Punktwolken in einem Diagramm",
+        "Berechnung der Nachweisgrenze bei der Messung z.B. einer Gesteinszusammensetzung",
+    ]
+}
+
+for category, projects in project_structure.items():
+    for project in projects:
+        c.execute(
+            """
+            INSERT OR IGNORE INTO projects
+            (title, claimed_by)
+            VALUES (?, NULL)
+            """,
+            (project,)
+        )
 
 # --- database setup ---
 conn = sqlite3.connect(DB, check_same_thread=False)
