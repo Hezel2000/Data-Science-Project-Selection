@@ -1,6 +1,7 @@
 import streamlit as st
 import sqlite3
 import pandas as pd
+import streamlit.components.v1 as components
 
 st.set_page_config(layout="centered")
 
@@ -190,50 +191,55 @@ with col_overview:
         </tr>
         """
 
-    st.markdown(
-        f"""
-        <style>
-        .selection-table {{
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }}
-        .selection-table th {{
-            text-align: left;
-            padding: 0.45rem;
-            border: 1px solid rgba(128,128,128,0.35);
-            background-color: rgba(128,128,128,0.08);
-        }}
-        .selection-table td {{
-            padding: 0.45rem;
-            border: 1px solid rgba(128,128,128,0.25);
-            vertical-align: top;
-            white-space: normal;
-            overflow-wrap: anywhere;
-            word-break: normal;
-        }}
-        .selection-table th:first-child,
-        .selection-table td:first-child {{
-            width: 68%;
-        }}
-        .selection-table th:nth-child(2),
-        .selection-table td:nth-child(2) {{
-            width: 32%;
-        }}
-        </style>
+    table_html = f"""
+    <style>
+    .selection-table {{
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        font-family: sans-serif;
+        font-size: 0.85rem;
+        color: inherit;
+    }}
+    .selection-table th {{
+        text-align: left;
+        padding: 0.45rem;
+        border: 1px solid rgba(128,128,128,0.35);
+        background-color: rgba(128,128,128,0.08);
+    }}
+    .selection-table td {{
+        padding: 0.45rem;
+        border: 1px solid rgba(128,128,128,0.25);
+        vertical-align: top;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }}
+    .selection-table th:first-child,
+    .selection-table td:first-child {{
+        width: 68%;
+    }}
+    .selection-table th:nth-child(2),
+    .selection-table td:nth-child(2) {{
+        width: 32%;
+    }}
+    </style>
 
-        <table class="selection-table">
-            <thead>
-                <tr>
-                    <th>Project</th>
-                    <th>Student</th>
-                </tr>
-            </thead>
-            <tbody>
-                {table_rows}
-            </tbody>
-        </table>
-        """,
-        unsafe_allow_html=True
+    <table class="selection-table">
+        <thead>
+            <tr>
+                <th>Project</th>
+                <th>Student</th>
+            </tr>
+        </thead>
+        <tbody>
+            {table_rows}
+        </tbody>
+    </table>
+    """
+
+    components.html(
+        table_html,
+        height=900,
+        scrolling=True
     )
