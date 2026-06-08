@@ -56,11 +56,16 @@ CREATE TABLE IF NOT EXISTS projects (
 )
 """)
 
-for p in projects:
-    c.execute(
-        "INSERT OR IGNORE INTO projects (title, claimed_by) VALUES (?, NULL)",
-        (p,)
-    )
+for category, project_list in project_structure.items():
+    for project in project_list:
+        c.execute(
+            """
+            INSERT OR IGNORE INTO projects
+            (title, claimed_by)
+            VALUES (?, NULL)
+            """,
+            (project,)
+        )
 
 conn.commit()
 
