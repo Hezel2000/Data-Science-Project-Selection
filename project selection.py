@@ -199,14 +199,15 @@ with col_overview:
         border-collapse: collapse;
         font-family: sans-serif;
         font-size: 0.85rem;
-        color: white;
+        color: #262730;
+        background-color: #ffffff;
     }}
     .selection-table th {{
         text-align: left;
         padding: 0.45rem;
         border: 1px solid rgba(128,128,128,0.35);
-        background-color: rgba(128,128,128,0.08);
-        color: white;
+        background-color: #f2f2f2;
+        color: #262730;
     }}
     .selection-table td {{
         padding: 0.45rem;
@@ -215,7 +216,8 @@ with col_overview:
         white-space: normal;
         overflow-wrap: anywhere;
         word-break: normal;
-        color: white;
+        color: #262730;
+        background-color: #ffffff;
     }}
     .selection-table th:first-child,
     .selection-table td:first-child {{
@@ -242,6 +244,6 @@ with col_overview:
 
     components.html(
         table_html,
-        height=1400,
+        height=1600,
         scrolling=True
     )
